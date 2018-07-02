@@ -34,3 +34,41 @@ def get_movies(input_list):
 
 movie_names = get_movies(movie_data)
 print(movie_names[1:5])
+
+
+# Write a function named is_usa() that checks whether or not a movie was made in the United States.
+# Check the movie_metadata.csv file to see which column corresponds to the nationality of the movie. Don't forget to subtract one to find the true index of the column in the list.
+# Use an if statement to check the right column of the list with the word "USA". The equality operation is case sensitive, so make sure to get the capitilization right.
+# Return True if the condition is met, and False otherwise.
+# Try it with a few movies in movie_data.
+# Call it on wonder_woman and store the result in wonder_woman_usa.
+wonder_woman = ['Wonder Woman','Patty Jenkins','Color',141,'Gal Gadot','English','USA',2017]
+
+def is_usa(movie):
+    if movie[6] == "USA":
+        return True
+    else:
+        return False
+wonder_woman_usa = is_usa(wonder_woman)
+
+
+# -Write a function index_equals_str() that takes in three arguments: a list, 
+# an index and a string, and checks whether that index of the list is equal to that string.
+# -Call the function with a different order of the inputs, using named arguments.
+# -Call the function on wonder_woman to check whether or not 
+# it is a movie in color, store it in wonder_woman_in_color, and print the value.
+wonder_woman = ['Wonder Woman','Patty Jenkins','Color',141,'Gal Gadot','English','USA',2017]
+def is_usa(input_lst):
+    if input_lst[6] == "USA":
+        return True
+    else:
+        return False
+
+def index_equals_str(lst,index,string):
+    if lst[index] == string:
+        return True
+    else:
+        return False
+
+index_equals_str(index=6,lst=wonder_woman,string="USA")
+wonder_woman_in_color = index_equals_str(wonder_woman,2,"Color")
