@@ -72,3 +72,34 @@ def index_equals_str(lst,index,string):
 
 index_equals_str(index=6,lst=wonder_woman,string="USA")
 wonder_woman_in_color = index_equals_str(wonder_woman,2,"Color")
+
+
+# Write a function named feature_counter() that combines the logic of the index_equals_str() and counter() functions.
+# Use this to find out how many of the movies were made in USA, and store the value in num_of_us_movies.
+def index_equals_str(input_lst,index,input_str):
+    if input_lst[index] == input_str:
+        return True
+    else:
+        return False
+    
+def counter(input_lst,header_row = False):
+    num_elt = 0
+    if header_row == True:
+        input_lst = input_lst[1:len(input_lst)]
+    for each in input_lst:
+        num_elt = num_elt + 1
+    return num_elt
+def feature_counter(input_list,index,input_str,header_row):
+    num_elt = 0
+    if header_row == True:
+        input_list = input_list[1:len(input_list)]
+    for each in input_list:
+        if each[index] == input_str:
+            num_elt = num_elt + 1
+    return num_elt
+
+num_of_us_movies = feature_counter(movie_data,6,"USA",True)
+print(num_of_us_movies)
+
+        
+            
