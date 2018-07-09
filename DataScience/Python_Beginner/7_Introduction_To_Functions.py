@@ -132,4 +132,15 @@ def summary_statistics(input_lst):
 
 summary = summary_statistics(movie_data)
     
-            
+# Edit the default code and fix the errors:
+# Access the first element in lives (instead of the fifth),
+# and assign it to a new variable first_life.
+# Use the read() method to read the file story.txt into a string named story.
+# Use the split() method to split the story variable into strings seperated 
+# by spaces and assign the result to split_story.
+# Display first_life and story.
+first_life = lives[0]
+story = open("story.txt").read()
+split_story = story.split(" ")
+print(first_life)
+print(story)
