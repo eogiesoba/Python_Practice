@@ -4,4 +4,5 @@
 # Anyone may freely copy or modify this program.
 #---------------------------------------------------
 
-print("Hello Universe!")     # Isn't this awesome
+print("Hello Universe!")    # Isn't this awesome
+print(9 // 4)               # Use trucated division in order to igonore the remainder
