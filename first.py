@@ -1,3 +1,7 @@
-print(0.00 + 6.99)
-print(4.5 - 3.5)
-print(4.5 - 10)
+#---------------------------------------------------
+# This demo program shows off how elegant Python is!
+# Written by Joe Soap, December 2010.
+# Anyone may freely copy or modify this program.
+#---------------------------------------------------
+
+print("Hello Universe!")     # Isn't this awesome
