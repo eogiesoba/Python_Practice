@@ -4,7 +4,7 @@
 # Anyone may freely copy or modify this program.
 # ---------------------------------------------------
 
-print(2 * 5 // 3 )    # This is the integer division operator
+print(16 - 2 * 5 // 3 + 1)    # This is the integer division operator
 print(7 % 3)     # This is the remainder or modulus operator
 print(18.0 // 4)
 
@@ -20,3 +20,14 @@ print("""This is a string statement
 for n in range(10 ** 4):
     if n % 13 == 0 and n % 100 == 15:
         print(n)
+
+#This code below will get the number of characters in rv
+
+rv = """Once upon a midnight dreary, while I pondered, weak and weary,
+    Over many a quaint and curious volume of forgotten lore,
+    While I nodded, nearly napping, suddenly there came a tapping,
+    As of some one gently rapping, rapping at my chamber door.
+    'Tis some visitor, I muttered, tapping at my chamber door;
+    Only this and nothing more."""
+
+num_chars = len(rv)
