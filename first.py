@@ -22,7 +22,6 @@ for n in range(10 ** 4):
         print(n)
 
 #This code below will get the number of characters in rv
-
 rv = """Once upon a midnight dreary, while I pondered, weak and weary,
     Over many a quaint and curious volume of forgotten lore,
     While I nodded, nearly napping, suddenly there came a tapping,
@@ -31,3 +30,10 @@ rv = """Once upon a midnight dreary, while I pondered, weak and weary,
     Only this and nothing more."""
 
 num_chars = len(rv)
+
+#Input from user text code
+current_time = input("what is the current time (in hours)?")
+wait_time = input("How many hours do you want to wait")
+
+print(current_time)
+print(wait_time)
