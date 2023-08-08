@@ -31,9 +31,14 @@ rv = """Once upon a midnight dreary, while I pondered, weak and weary,
 
 num_chars = len(rv)
 
-#Input from user text code
-current_time = input("what is the current time (in hours)?")
-wait_time = input("How many hours do you want to wait")
+#Input from user text code, collect 2 input values then convert to int values
+#then finally add them
 
-print(current_time)
-print(wait_time)
+current_time_str = input("what is the current time (in hours 0-23)?")
+wait_time_str = input("How many hours do you want to wait")
+
+current_time_int = int(current_time_str)
+wait_time_int = int(wait_time_str)
+
+final_time_int = current_time_int + wait_time_int
+print(final_time_int)
