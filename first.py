@@ -31,17 +31,9 @@ rv = """Once upon a midnight dreary, while I pondered, weak and weary,
 
 num_chars = len(rv)
 
-#Input from user text code, collect 2 input values then convert to int values
-#then finally add them
+#Semanti error example below. This will not give an error but it will not provide the right answer
+num1 = input('Enter a number:')
+num2 = input('Enter another number:')
+sum = num1 + num2
 
-current_time_str = input("what is the current time (in hours 0-23)?")
-wait_time_str = input("How many hours do you want to wait")
-
-current_time_int = int(current_time_str)
-wait_time_int = int(wait_time_str)
-
-final_time_int = current_time_int + wait_time_int
-
-final_answer = final_time_int % 24
-
-print(final_time_int)
+print('The sum of', num1, 'and', num2, 'is', sum)
