@@ -31,9 +31,9 @@ rv = """Once upon a midnight dreary, while I pondered, weak and weary,
 
 num_chars = len(rv)
 
-#Semanti error example below. This will not give an error but it will not provide the right answer
-num1 = input('Enter a number:')
-num2 = input('Enter another number:')
-sum = num1 + num2
-
-print('The sum of', num1, 'and', num2, 'is', sum)
+#Logical Operator Test
+x = True
+y = False
+print(x or y)
+print(x and y)
+print(not x)
