@@ -34,6 +34,7 @@ num_chars = len(rv)
 #Logical Operator Test
 x = True
 y = False
+r1 = 34
 print(x or y)
 print(x and y)
 print(not x)
