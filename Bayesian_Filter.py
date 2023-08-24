@@ -7,10 +7,8 @@ import random
 #Declare global variables
 state_space = ["p0", "p1", "p2","p3"]
 state_space_range = len(state_space)
-print(state_space_range)
 random_sensor = False
 belief_dictionary = {}
-bel_bar = []
 
 #Initial belief at time = 0
 bel_p0 = 0.25
@@ -28,33 +26,35 @@ def prob_control(state_previous, state_current):
         return 0.10
     else:
         return 0
-def prob_measurement(state_unique, state_current):
+def prob_measurement(state_unique, state_sensor):
     sensor_measurement = ["wall","door","wall","door"]
     if random_sensor: 
-        random_index = random.randint(0, len(sensor_measurement) - 1)
-        if sensor_measurement[random_index] == "wall":
-            if sensor_measurement[state_unique] == "wall":
+        random_sensor_index = random.randint(0, len(sensor_measurement) - 1)
+        if sensor_measurement[state_unique] == "wall":
+            if sensor_measurement[random_sensor_index] == "wall":
                 return 0.75
             else:
                 return 0.25
-        if sensor_measurement[random_index] == "door":
-            if sensor_measurement[state_unique] == "door":
+        if sensor_measurement[state_unique] == "door":
+            if sensor_measurement[random_sensor_index] == "door":
                 return 0.70
             else:
                 return 0.30
     else:
-        if sensor_measurement[state_current] == "wall":
-            if sensor_measurement[state_unique] == "wall":
+        if sensor_measurement[state_unique] == "wall":
+            if sensor_measurement[state_sensor] == "wall":
                 return 0.75
             else:
                 return 0.25
-        if sensor_measurement[state_current] == "door":
-            if sensor_measurement[state_unique] == "door":
+        if sensor_measurement[state_unique] == "door":
+            if sensor_measurement[state_sensor] == "door":
                 return 0.70
             else:
                 return 0.30
 def bayesian_filter():
     for time in range(state_space_range):
+        #Initialize bel_bar
+        bel_bar = []
 
         if time == 0:
             #Current belief at time = 0
@@ -62,7 +62,9 @@ def bayesian_filter():
             bel_p1 = 0.25
             bel_p2 = 0.25
             bel_p3 = 0.25
-        else:
+            print("bel_bar: ", bel_bar)
+            print("bel: ", bel_p0, bel_p1, bel_p2, bel_p3)
+        else:            
             #Current belief at time t > 0 
             for state_control in range(state_space_range):
                 print(state_control)
@@ -72,21 +74,29 @@ def bayesian_filter():
                 prob_d = prob_control(3, state_control) * bel_p3
                 bel_bar_sum = prob_a + prob_b + prob_c + prob_d
                 bel_bar.append(bel_bar_sum)
-            print(bel_bar)
-            state_sensor = time # Let the value of time represent the state
+            print("bel_bar: " , bel_bar)
+            # Let the value of time represent the state
+            state_sensor = time 
+
+            #Calculate bel_without_eta
             bel_without_eta_p0 = prob_measurement(0, state_sensor) * bel_bar[0]
             bel_without_eta_p1 = prob_measurement(1, state_sensor) * bel_bar[1]
             bel_without_eta_p2 = prob_measurement(2, state_sensor) * bel_bar[2]
             bel_without_eta_p3 = prob_measurement(3, state_sensor) * bel_bar[3]
-
+            print("bel_without_eta: " , bel_without_eta_p0, bel_without_eta_p1, bel_without_eta_p2, bel_without_eta_p3)
+            #Calculate eta
             eta = 1 / (bel_without_eta_p0 + bel_without_eta_p1 + bel_without_eta_p2 + bel_without_eta_p3)
-
-            #Calculate and add new belief to belief_dictionary
+            print("eta: " , eta)
+            #Calculate new beliefs at new time step
             bel_p0 = bel_without_eta_p0 * eta
             bel_p1 = bel_without_eta_p1 * eta
             bel_p2 = bel_without_eta_p2 * eta
             bel_p3 = bel_without_eta_p3 * eta
+            print("bel: ", bel_p0, bel_p1, bel_p2, bel_p3)
+
+        #Add new belief to belief_dictionary
         belief_dictionary["time = " + str(time)] = (bel_p0, bel_p1, bel_p2, bel_p3)
+    
     print(belief_dictionary)
 
 bayesian_filter()
