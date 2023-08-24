@@ -3,20 +3,22 @@
 
 # Import importaant libraries
 import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 #Declare global variables
 state_space = ["p0", "p1", "p2","p3"]
 state_space_range = len(state_space)
 random_sensor = False
-belief_dictionary = {}
+time_step_arr = []
+belief_dictionary = {
+    "bel_p0" : [],
+    "bel_p1" : [],
+    "bel_p2" : [],
+    "bel_p3" : [],
+}
 
-#Initial belief at time = 0
-bel_p0 = 0.25
-bel_p1 = 0.25
-bel_p2 = 0.25
-bel_p3 = 0.25
-
-#Calculate control probability
+#Define control probability function
 def prob_control(state_previous, state_current):
     if state_current - state_previous == 0:
         return 0.20
@@ -26,6 +28,8 @@ def prob_control(state_previous, state_current):
         return 0.10
     else:
         return 0
+
+#Define measurement probability function
 def prob_measurement(state_unique, state_sensor):
     sensor_measurement = ["wall","door","wall","door"]
     if random_sensor: 
@@ -51,7 +55,9 @@ def prob_measurement(state_unique, state_sensor):
                 return 0.70
             else:
                 return 0.30
-def bayesian_filter():
+
+#Define the bayesian filter function
+def run_bayesian_filter():
     for time in range(state_space_range):
         #Initialize bel_bar
         bel_bar = []
@@ -62,6 +68,16 @@ def bayesian_filter():
             bel_p1 = 0.25
             bel_p2 = 0.25
             bel_p3 = 0.25
+
+            #Add beliefs to belief_dictionary
+            belief_dictionary["bel_p0"].append(bel_p0)
+            belief_dictionary["bel_p1"].append(bel_p1)
+            belief_dictionary["bel_p2"].append(bel_p2)
+            belief_dictionary["bel_p3"].append(bel_p3)
+
+            #Add new time step name to time_step_arr
+            time_step_arr.append("time = " + str(time))
+            
             print("bel_bar: ", bel_bar)
             print("bel: ", bel_p0, bel_p1, bel_p2, bel_p3)
         else:            
@@ -94,42 +110,43 @@ def bayesian_filter():
             bel_p3 = bel_without_eta_p3 * eta
             print("bel: ", bel_p0, bel_p1, bel_p2, bel_p3)
 
-        #Add new belief to belief_dictionary
-        belief_dictionary["time = " + str(time)] = (bel_p0, bel_p1, bel_p2, bel_p3)
-    
+            #Add beliefs to belief_dictionary
+            belief_dictionary["bel_p0"].append(bel_p0)
+            belief_dictionary["bel_p1"].append(bel_p1)
+            belief_dictionary["bel_p2"].append(bel_p2)
+            belief_dictionary["bel_p3"].append(bel_p3)
+
+            #Add new time step name to time_step_arr
+            time_step_arr.append("time = " + str(time))
+
     print(belief_dictionary)
+    print(time_step_arr)
 
-bayesian_filter()
+# Define the bayesian Filter Plot function
+def plot_bayesian_filter_beliefs():
+    x = np.arange(len(belief_dictionary))  # the label locations
+    width = 0.20  # the width of the bars
+    multiplier = 0
 
+    fig, ax = plt.subplots(layout='constrained')
 
-# Plot the Bayesian Filter Robot Location Probabilities
-# import matplotlib.pyplot as plt
-# import numpy as np
+    for time_step, belief in belief_dictionary.items():
+        offset = width * multiplier
+        rects = ax.bar(x + offset, belief, width, label=time_step)
+        ax.bar_label(rects, padding=3, label_type='edge', fontsize=8)
+        multiplier += 1
 
-# species = ("Adelie", "Chinstrap", "Gentoo")
-# penguin_means = {
-#     'Bill Depth': (18.35, 18.43, 14.98),
-#     'Bill Length': (38.79, 48.83, 47.50),
-#     'Flipper Length': (189.95, 195.82, 217.19),
-# }
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Probability')
+    ax.set_title('Bayesian Filter Calculated Beliefs')
+    ax.set_xticks(x + width, time_step_arr)
+    ax.legend(loc='upper left', ncols=4)
+    ax.set_ylim(0, 1)
 
-# x = np.arange(len(species))  # the label locations
-# width = 0.25  # the width of the bars
-# multiplier = 0
+    plt.show()
 
-# fig, ax = plt.subplots(layout='constrained')
+#Run the bayesian filter algorithm
+run_bayesian_filter()  
 
-# for attribute, measurement in penguin_means.items():
-#     offset = width * multiplier
-#     rects = ax.bar(x + offset, measurement, width, label=attribute)
-#     ax.bar_label(rects, padding=3)
-#     multiplier += 1
-
-# # Add some text for labels, title and custom x-axis tick labels, etc.
-# ax.set_ylabel('Length (mm)')
-# ax.set_title('Penguin attributes by species')
-# ax.set_xticks(x + width, species)
-# ax.legend(loc='upper left', ncols=3)
-# ax.set_ylim(0, 250)
-
-# plt.show()
+#Plot Bayesian filter beliefs at each state at each time step
+plot_bayesian_filter_beliefs()
