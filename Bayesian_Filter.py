@@ -9,6 +9,7 @@ import numpy as np
 #Declare global variables
 state_space = ["p0", "p1", "p2","p3"]
 state_space_range = len(state_space)
+num_of_time_steps = 4
 random_sensor = False
 time_step_arr = []
 belief_dictionary = {
@@ -58,7 +59,7 @@ def prob_measurement(state_unique, state_sensor):
 
 #Define the bayesian filter function
 def run_bayesian_filter():
-    for time in range(state_space_range):
+    for time in range(num_of_time_steps):
         #Initialize bel_bar
         bel_bar = []
 
@@ -81,8 +82,12 @@ def run_bayesian_filter():
             print("bel_bar: ", bel_bar)
             print("bel: ", bel_p0, bel_p1, bel_p2, bel_p3)
         else:            
-            #Current belief at time t > 0 
+            #Calculate bel_bar
             for state_control in range(state_space_range):
+                 # Limit the value of state_control to a maximum of 3
+                if state_control > 3:
+                    state_control = 3
+
                 print(state_control)
                 prob_a = prob_control(0, state_control) * bel_p0 
                 prob_b = prob_control(1, state_control) * bel_p1
@@ -91,8 +96,11 @@ def run_bayesian_filter():
                 bel_bar_sum = prob_a + prob_b + prob_c + prob_d
                 bel_bar.append(bel_bar_sum)
             print("bel_bar: " , bel_bar)
-            # Let the value of time represent the state
-            state_sensor = time 
+
+            # Let the value of time represent the state and limit the last state to 3
+            state_sensor = time
+            if state_sensor > 3:
+                state_sensor = 3
 
             #Calculate bel_without_eta
             bel_without_eta_p0 = prob_measurement(0, state_sensor) * bel_bar[0]
@@ -124,22 +132,24 @@ def run_bayesian_filter():
 
 # Define the bayesian Filter Plot function
 def plot_bayesian_filter_beliefs():
-    x = np.arange(len(belief_dictionary))  # the label locations
-    width = 0.20  # the width of the bars
+    x = np.arange(len(time_step_arr))  # the label locations
+    width = 0.20  # the width of the belief bars
     multiplier = 0
 
     fig, ax = plt.subplots(layout='constrained')
 
-    for time_step, belief in belief_dictionary.items():
+    for state, beliefs in belief_dictionary.items():
         offset = width * multiplier
-        rects = ax.bar(x + offset, belief, width, label=time_step)
+        rects = ax.bar(x + offset, beliefs, width, label=state)
         ax.bar_label(rects, padding=3, label_type='edge', fontsize=8)
         multiplier += 1
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_xlabel('Time Step')
     ax.set_ylabel('Probability')
     ax.set_title('Bayesian Filter Calculated Beliefs')
-    ax.set_xticks(x + width, time_step_arr)
+    xtick_space = x + width * (multiplier - 1) / 2
+    ax.set_xticks(xtick_space, time_step_arr)
     ax.legend(loc='upper left', ncols=4)
     ax.set_ylim(0, 1)
 
